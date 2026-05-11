@@ -1,3 +1,6 @@
+# hamming_decoder.py
+# раскодирование кода Хэмминга [7,4]
+
 #from hamming_encoder import hamming_encode_bytes
 from hamming_check import calculate_syndrome_hamming74
 
@@ -34,6 +37,9 @@ def hamming_decode_bytes(encoded_data: bytes) -> bytes:
     Каждый байт потока содержит один 7-битный код Хэмминга.
     При обнаружении ошибки выбрасывает исключение (для последующей обработки в парсере кадров).
     """
+    if len(encoded_data) % 2 != 0:
+        raise ValueError("Длина закодированных данных должна быть чётной. Проверьте целостность кадра.")
+    
     decoded_nibbles = []
     for byte_val in encoded_data:
         nibble, ok = decode_nibble_hamming74(byte_val)
@@ -44,7 +50,7 @@ def hamming_decode_bytes(encoded_data: bytes) -> bytes:
 
     # Собираем байты из пар полубайтов (старший полубайт, младший полубайт)
     decoded = bytearray()
-    for i in range(0, len(decoded_nibbles) - 1, 2):
+    for i in range(0, len(decoded_nibbles), 2):
         high = decoded_nibbles[i]
         low = decoded_nibbles[i+1]
         decoded.append((high << 4) | low)

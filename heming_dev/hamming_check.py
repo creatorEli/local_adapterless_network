@@ -1,3 +1,6 @@
+# hamming_check.py
+# вычисление синдрома ошибки и проверка
+
 def calculate_syndrome_hamming74(code_word: int) -> int:
     """
     Вычисляет синдром ошибки для 7-битного кодового слова Хэмминга [7,4].
